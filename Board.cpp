@@ -141,7 +141,52 @@ string Board::draw(int n) {
 		Pixel(uint8_t red, uint8_t green, uint8_t blue) : _red(red), _green(green), _blue(blue) {}
 	};
 
-	vector<vector<Pixel>> img(n, (n, ()));
+	ofstream imgFile("cpp.ppm", ios::out | ios::binary);
+	imgFile << "P6" << endl << n << " " << n << endl << 255 << endl;
 
+	Pixel img[n*n];
 
+	for (int x = 0; x < n; ++x) {
+		for (int y = 0; y < n; ++y) {
+			img[n*x + y].red = 255;
+			img[n*x + y].green = 255;
+			img[n*x + y].blue = 255;
+		}
+	}
+
+	int rows = _board->size()
+	int cols = _board->at(0)->size();
+	int step_x = n / cols;
+	int step_y = n / rows;
+	for (int x = 0, y = 0; x < cols && y < rows; x += step_x, y += step_y) {
+		drawShape(&(_board[{x, y}]), img, n, x*step_x, y*step_y, (x + 1)*step_x, (y + 1)*step_y);
+	}
+
+	imgFile.write(reinterpret_cast<char*>(&img), 3 * n*n);
+	imgFile.close();
+	return 0;
+}
+
+void Board::drawShape(Symbol* symbol, Pixel* img, int img_size, int start_x, int start_y, int end_x, int end_y) {
+	switch (symbol->getChar()) {
+		case 'X':
+			int pixels_per_line = (end_x - start_x) / 10;
+
+			for (int x = start_x, ; x < pixels_per_line; ++x) {
+				for (int i = x, int j = start_y; i < end_x && j < end_y; ++i, ++j) {
+					img[n*j + i].red = 0;
+					img[n*j + i].green = 0;
+					img[n*j + i].blue = 0;
+				}
+			}
+			for (int x = end_x - 1, ; x < end_x - 1 - pixels_per_line; ++x) {
+				for (int i = x, int j = start_y; i >= start_x && j < end_y; --i, ++j) {
+					img[n*j + i].red = 0;
+					img[n*j + i].green = 0;
+					img[n*j + i].blue = 0;
+				}
+			}
+		case 'O':
+			
+	}
 }

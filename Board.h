@@ -9,6 +9,8 @@
 #include <iosfwd>
 #include "Coordinate.hpp"
 
+class Pixel;
+
 using namespace std;
 
 class Board {
@@ -45,6 +47,7 @@ public:
     Symbol& operator[] (Coordinate coordinate)const;
 
 	string draw(int n);
+	void drawShape(Symbol* symbol, Pixel* img, int img_size, int start_x, int start_y, int end_x, int end_y);
 };
 
 #endif //INC_6_BOARD_H

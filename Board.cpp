@@ -131,3 +131,17 @@ Board::Symbol & Board::Symbol::operator=(char c) {
 Board::Symbol::operator char() {
 	return _val;
 }
+
+string Board::draw(int n) {
+	struct Pixel {
+		uint8_t _red, _green, _blue;
+
+	public:
+		Pixel() {}
+		Pixel(uint8_t red, uint8_t green, uint8_t blue) : _red(red), _green(green), _blue(blue) {}
+	};
+
+	vector<vector<Pixel>> img(n, (n, ()));
+
+
+}

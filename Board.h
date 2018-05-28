@@ -43,6 +43,8 @@ public:
     Board& operator= (char c);
 	Board& operator= (Board& board);
     Symbol& operator[] (Coordinate coordinate)const;
+
+	string draw(int n);
 };
 
 #endif //INC_6_BOARD_H

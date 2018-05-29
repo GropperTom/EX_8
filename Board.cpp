@@ -158,8 +158,10 @@ string Board::draw(int n) {
 	int cols = _board->at(0)->size();
 	int step_x = n / cols;
 	int step_y = n / rows;
-	for (int x = 0, y = 0; x < cols && y < rows; x += step_x, y += step_y) {
-		drawShape(&(_board[{x, y}]), img, n, x*step_x, y*step_y, (x + 1)*step_x, (y + 1)*step_y);
+	for (int x = 0; x < cols; ++x) {
+		for (int y = 0; y < rows; ++y) {
+			drawShape(&(_board[{x, y}]), img, n, x*step_x, y*step_y, (x + 1)*step_x, (y + 1)*step_y);
+		}
 	}
 
 	imgFile.write(reinterpret_cast<char*>(&img), 3 * n*n);
@@ -170,23 +172,52 @@ string Board::draw(int n) {
 void Board::drawShape(Symbol* symbol, Pixel* img, int img_size, int start_x, int start_y, int end_x, int end_y) {
 	switch (symbol->getChar()) {
 		case 'X':
-			int pixels_per_line = (end_x - start_x) / 10;
+			int pixels = (end_x - start_x) * 0.1;
 
-			for (int x = start_x, ; x < pixels_per_line; ++x) {
+			for (int x = start_x, ; x < pixels; ++x) {
 				for (int i = x, int j = start_y; i < end_x && j < end_y; ++i, ++j) {
 					img[n*j + i].red = 0;
 					img[n*j + i].green = 0;
 					img[n*j + i].blue = 0;
 				}
 			}
-			for (int x = end_x - 1, ; x < end_x - 1 - pixels_per_line; ++x) {
+			int start = end_x - 1;
+			for (int x = start, ; x < start - pixels; ++x) {
 				for (int i = x, int j = start_y; i >= start_x && j < end_y; --i, ++j) {
 					img[n*j + i].red = 0;
 					img[n*j + i].green = 0;
 					img[n*j + i].blue = 0;
 				}
 			}
+			break;
 		case 'O':
-			
+			int x_pixels_amnt = end_x - start_x;
+			int y_pixels_amnt = end_y - start_y;
+
+			for (int x = start_x + (x_pixels_amnt * 0.1); x < start_x + (x_pixels_amnt * 0.9); ++x) {
+				for (int y = start_y + (y_pixels_amnt * 0.1); y < start_y + (y_pixels_amnt * 0.9); ++y) {
+					img[n*y + x].red = 0;
+					img[n*y + x].green = 0;
+					img[n*y + x].blue = 0;
+				}
+			}
+
+			for (int x = start_x + (x_pixels_amnt * 0.4); x < start_x + (x_pixels_amnt * 0.6); ++x) {
+				for (int y = start_y + (y_pixels_amnt * 0.4); y < start_y + (y_pixels_amnt * 0.6); ++y) {
+					img[n*y + x].red = 255;
+					img[n*y + x].green = 255;
+					img[n*y + x].blue = 255;
+				}
+			}
+			break;
+		case '.':
+			for (int x = start_x; x < start_x + (x_pixels_amnt * 0.2); ++x) {
+				for (int y = start_y + (y_pixels_amnt * 0.8); y < end_y; ++y) {
+					img[n*y + x].red = 0;
+					img[n*y + x].green = 0;
+					img[n*y + x].blue = 0;
+				}
+			}
+			break;
 	}
 }

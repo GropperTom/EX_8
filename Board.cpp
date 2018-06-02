@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <chrono>
 #include "Board.h"
 #include "Coordinate.hpp"
 #include "IllegalCoordinateException.h"
@@ -147,7 +148,8 @@ Symbol & Symbol::operator=(char c) {
 //}
 
 string Board::draw(int n) {
-	ofstream imgFile("cpp.ppm", ios::out | ios::binary);
+    string filename = "image_" + to_string(rand()) + ".ppm";
+	ofstream imgFile(filename, ios::out | ios::binary);
 	imgFile << "P6" << endl << n << " " << n << endl << 255 << endl;
 
 	Pixel img[n*n];
@@ -178,7 +180,7 @@ string Board::draw(int n) {
 
 	imgFile.write(reinterpret_cast<char*>(&img), 3 * n*n);
 	imgFile.close();
-	return "cpp.ppm";
+	return filename;
 }
 
 void Board::drawShape(Symbol* symbol, Pixel img[], int img_size, int start_x, int start_y, int end_x, int end_y, int n) {

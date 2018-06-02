@@ -148,6 +148,7 @@ Symbol & Symbol::operator=(char c) {
 //}
 
 string Board::draw(int n) {
+  srand (time(NULL));
     string filename = "image_" + to_string(rand()) + ".ppm";
 	ofstream imgFile(filename, ios::out | ios::binary);
 	imgFile << "P6" << endl << n << " " << n << endl << 255 << endl;
